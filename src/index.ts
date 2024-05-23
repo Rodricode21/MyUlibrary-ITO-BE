@@ -1,8 +1,9 @@
 import express, { Request, Response, NextFunction } from "express";
-import { createBooks, getAllBooks } from "./controllers/booksControllers";
+import bookRoutes from './routes/books';
 
 const app = express();
 const port = process.env.PORT || 8000;
+
 app.use(express.json());
 
 var cors = require("cors");
@@ -16,11 +17,10 @@ const corsOpts = {
 app.use(cors(corsOpts));
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Hello, TypeScript with Express!");
+  res.send("healthcheck - we're live!");
 });
 
-app.get("/api/books", getAllBooks);
-app.post("/api/createBooks", createBooks);
+app.use("/api/books", bookRoutes)
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
