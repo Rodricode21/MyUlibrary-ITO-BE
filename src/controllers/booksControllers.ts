@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-const Books = require("../models/books");
+import Books from '../models/books'
 
 export const getAllBooks = async (
   req: Request,
@@ -13,6 +13,18 @@ export const getAllBooks = async (
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+export const getBookById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const book = await Books.bookById(id)
+    res.status(200).json(book)
+  } catch (error) {
+    console.error("Error fetching book", error);
+    
+  }
+}
 
 export const createBooks = async (req: Request, res: Response) => {
   try {

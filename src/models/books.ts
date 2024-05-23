@@ -22,6 +22,12 @@ const getBooks = async (): Promise<Book[]> => {
   return res.rows;
 };
 
+const bookById = async (id: string): Promise<Book> => {
+  const res = await pool.query(`SELECT * FROM library.books WHERE id = ${id}`)
+  const book = res.rows[0]
+  return book
+}
+
 const createBooks = async (book: NewBook) => {
   const { title, author, genre, copies } = book;
 
@@ -35,5 +41,6 @@ const createBooks = async (book: NewBook) => {
 
 export default {
   getBooks,
+  bookById,
   createBooks,
 }
