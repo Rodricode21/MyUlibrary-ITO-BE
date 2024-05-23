@@ -28,7 +28,7 @@ const bookById = async (id: string): Promise<Book> => {
   return book
 }
 
-const createBooks = async (book: NewBook) => {
+const createBooks = async (book: NewBook): Promise<Book> => {
   const { title, author, genre, copies } = book;
 
   const query =
