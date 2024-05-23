@@ -6,7 +6,13 @@ export const getAllBooks = async (
   res: Response
 ): Promise<void> => {
   try {
-    const books = await Books.getBooks();
+    const bookParams = {
+      title: String(req.query.title),
+      author: String(req.query.author),
+      genre: String(req.query.genre)
+    }
+
+    const books = await Books.getBooks(bookParams);
     res.status(200).json(books);
   } catch (error) {
     console.error("Error fetching books:", error);
