@@ -17,18 +17,42 @@ export interface NewBook {
   copies: number;
 }
 
-type BookQueryParams = Pick<Book, "title" | "author" | "genre">
+type BookQueryParams = Pick<Book, "title" | "author" | "genre">;
 
-const getBooks = async (query: BookQueryParams): Promise<Book[]> => {
-  const res = await pool.query("SELECT * FROM library.books");
+export const getBooks = async (params?: BookQueryParams): Promise<Book[]> => {
+  let query = "SELECT * FROM library.books";
+  const queryParams: string[] = [];
+
+  if (params) {
+    const conditions: string[] = [];
+
+    if (params.title) {
+      conditions.push(`title ILIKE $${conditions.length + 1}`);
+      queryParams.push(`%${params.title}%`);
+    }
+    if (params.author) {
+      conditions.push(`author ILIKE $${conditions.length + 1}`);
+      queryParams.push(`%${params.author}%`);
+    }
+    if (params.genre) {
+      conditions.push(`genre ILIKE $${conditions.length + 1}`);
+      queryParams.push(`%${params.genre}%`);
+    }
+
+    if (conditions.length > 0) {
+      query += ` WHERE ${conditions.join(" AND ")}`;
+    }
+  }
+
+  const res = await pool.query(query, queryParams);
   return res.rows;
 };
 
 const bookById = async (id: string): Promise<Book> => {
-  const res = await pool.query(`SELECT * FROM library.books WHERE id = ${id}`)
-  const book = res.rows[0]
-  return book
-}
+  const res = await pool.query(`SELECT * FROM library.books WHERE id = ${id}`);
+  const book = res.rows[0];
+  return book;
+};
 
 const createBooks = async (book: NewBook): Promise<Book> => {
   const { title, author, genre, copies } = book;
@@ -45,4 +69,4 @@ export default {
   getBooks,
   bookById,
   createBooks,
-}
+};
