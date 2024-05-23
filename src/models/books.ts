@@ -17,12 +17,12 @@ export interface NewBook {
   copies: number;
 }
 
-export const getBooks = async (): Promise<Book[]> => {
+const getBooks = async (): Promise<Book[]> => {
   const res = await pool.query("SELECT * FROM library.books");
   return res.rows;
 };
 
-export const createBooks = async (book: NewBook) => {
+const createBooks = async (book: NewBook) => {
   const { title, author, genre, copies } = book;
 
   const query =
@@ -33,7 +33,7 @@ export const createBooks = async (book: NewBook) => {
   return rows[0];
 };
 
-module.exports = {
+export default {
   getBooks,
   createBooks,
-};
+}
