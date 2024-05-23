@@ -20,7 +20,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("healthcheck - we're live!");
 });
 
-app.use("/api/books", bookRoutes)
+app.use("/api", bookRoutes)
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
