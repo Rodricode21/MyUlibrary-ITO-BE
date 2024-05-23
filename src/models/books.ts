@@ -17,7 +17,9 @@ export interface NewBook {
   copies: number;
 }
 
-const getBooks = async (): Promise<Book[]> => {
+type BookQueryParams = Pick<Book, "title" | "author" | "genre">
+
+const getBooks = async (query: BookQueryParams): Promise<Book[]> => {
   const res = await pool.query("SELECT * FROM library.books");
   return res.rows;
 };
