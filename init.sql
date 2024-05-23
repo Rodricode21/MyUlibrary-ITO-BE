@@ -31,18 +31,18 @@ CREATE TABLE library.books (
 -- Crear la tabla reserved_books
 CREATE TABLE library.reserved_books (
     id SERIAL PRIMARY KEY,
-    book_id INTEGER REFERENCES books(id),
+    book_id INTEGER REFERENCES library.books(id),
     body TEXT,
     -- user_id INTEGER REFERENCES users(id),
     status VARCHAR NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- CREATING FIXTURES DATA
+-- ********* CREATING FIXTURES DATA
 
 -- Insert initial records into the "users" table
 INSERT INTO library.users (first_name, last_name, password, role, email) VALUES
-  ('rodrigo', 'serrano', 'pwd', 'student', 'test@gmail.com'),
+  ('rodrigo', 'serrano', 'pwd', 'student', 'test@gmail.com')
 --   ('Frozen', 7000, '11/19/2013', 2),
 
 INSERT INTO library.books (title, author, published_year, genre, copies) VALUES
