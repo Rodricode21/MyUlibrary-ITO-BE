@@ -59,6 +59,6 @@ export const reserveBook = async (req: Request, res: Response) => {
     res.status(200).json(book);
   } catch (error) {
     console.error("Error reserving a book", error);
-    res.status(400).json({ error: "Could not checkout a book" });
+    res.status(400).json({ error });
   }
 }
