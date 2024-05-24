@@ -65,7 +65,7 @@ const createBooks = async (book: NewBook): Promise<Book> => {
   return rows[0];
 };
 
-const reserveBook = async ({ bookId, userId }: { bookId: string, userId: string }): Promise<void> => {
+const reserveBook = async ({ bookId, userId }: { bookId: string, userId: string }): Promise<Book> => {
   const query =
     "INSERT INTO library.reserved_books (book_id, user_id) VALUES ($1, $2) RETURNING *"
 
@@ -75,9 +75,20 @@ const reserveBook = async ({ bookId, userId }: { bookId: string, userId: string 
   return rows[0];
 }
 
+const substractCopy = async ({ bookId }: { bookId: string }): Promise<void> => {
+  // Alter said book by id, and substract a -1 of # of copies
+  const substractQuery = "UPDATE library.books SET copies = copies - 1 WHERE id = $1;"
+
+  const values = [bookId]
+
+  await pool.query(substractQuery, values);
+}
+
+
 export default {
   getBooks,
   bookById,
   createBooks,
-  reserveBook
+  reserveBook,
+  substractCopy
 };

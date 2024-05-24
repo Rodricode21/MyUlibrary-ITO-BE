@@ -56,6 +56,8 @@ export const reserveBook = async (req: Request, res: Response) => {
     if (requestedBook.copies === 0) throw Error("Book has no copies left")
 
     const book = await Books.reserveBook({ bookId, userId });
+    // decrement # of copies
+    await Books.substractCopy({ bookId })
     res.status(200).json(book);
   } catch (error) {
     console.error("Error reserving a book", error);
