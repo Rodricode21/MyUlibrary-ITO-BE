@@ -1,12 +1,11 @@
 import express, { Request, Response, NextFunction } from "express";
 import bookRoutes from './routes/books';
+import cors from 'cors'
 
 const app = express();
 const port = process.env.PORT || 8000;
 
 app.use(express.json());
-
-var cors = require("cors");
 
 const corsOpts = {
   origin: "*",
