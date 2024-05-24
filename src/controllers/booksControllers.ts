@@ -46,3 +46,19 @@ export const createBooks = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+export const reserveBook = async (req: Request, res: Response) => {
+  const { bookId, userId } = req.body;
+  try {
+    // validate given book (by id) still has copies left
+    const requestedBook = await Books.bookById(bookId);
+
+    if (requestedBook.copies === 0) throw Error("Book has no copies left")
+
+    const book = await Books.reserveBook({ bookId, userId });
+    res.status(200).json(book);
+  } catch (error) {
+    console.error("Error reserving a book", error);
+    res.status(400).json({ error: "Could not checkout a book" });
+  }
+}

@@ -65,8 +65,19 @@ const createBooks = async (book: NewBook): Promise<Book> => {
   return rows[0];
 };
 
+const reserveBook = async ({ bookId, userId }: { bookId: string, userId: string }): Promise<void> => {
+  const query =
+    "INSERT INTO library.reserved_books (book_id, user_id) VALUES ($1, $2) RETURNING *"
+
+  const values = [bookId, userId]
+
+  const { rows } = await pool.query(query, values);
+  return rows[0];
+}
+
 export default {
   getBooks,
   bookById,
   createBooks,
+  reserveBook
 };
