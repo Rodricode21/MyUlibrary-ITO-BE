@@ -55,12 +55,12 @@ const bookById = async (id: string): Promise<Book> => {
 };
 
 const createBooks = async (book: NewBook): Promise<Book> => {
-  const { title, author, genre, copies } = book;
+  const { title, author, genre, copies, published_year } = book;
 
   const query =
-    "INSERT INTO library.books (title,author,genre,copies) VALUES ($1, $2, $3, $4) RETURNING *";
+    "INSERT INTO library.books (title,author,genre,copies, published_year) VALUES ($1, $2, $3, $4, $5) RETURNING *";
 
-  const values = [title, author, genre, copies];
+  const values = [title, author, genre, copies, published_year];
   const { rows } = await pool.query(query, values);
   return rows[0];
 };
